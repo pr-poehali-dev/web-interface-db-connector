@@ -1,0 +1,26 @@
+{
+  "tests": [
+    {
+      "name": "Test SELECT query",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "query": "SELECT * FROM users LIMIT 1"
+      },
+      "expectedStatus": 200
+    },
+    {
+      "name": "Test empty query error",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "query": ""
+      },
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
