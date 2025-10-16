@@ -5,6 +5,7 @@ import Icon from '@/components/ui/icon';
 
 interface TableInfo {
   table_name: string;
+  table_schema?: string;
   row_count: number;
 }
 
@@ -21,11 +22,13 @@ export default function TablesView() {
     try {
       const query = `
         SELECT 
-          tablename as table_name,
+          table_name::text,
+          table_schema::text,
           0 as row_count
-        FROM pg_tables 
-        WHERE schemaname = 'public'
-        ORDER BY tablename
+        FROM information_schema.tables 
+        WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
+          AND table_type = 'BASE TABLE'
+        ORDER BY table_name
       `;
       
       const response = await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
@@ -34,7 +37,32 @@ export default function TablesView() {
         body: JSON.stringify({ query }),
       });
       const data = await response.json();
-      setTables(data.results || []);
+      
+      if (data.results && data.results.length > 0) {
+        const tablesWithCounts = await Promise.all(
+          data.results.map(async (table: TableInfo) => {
+            try {
+              const fullTableName = table.table_schema 
+                ? `"${table.table_schema}"."${table.table_name}"`
+                : `"${table.table_name}"`;
+              const countQuery = `SELECT COUNT(*) as count FROM ${fullTableName}`;
+              const countResponse = await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: countQuery }),
+              });
+              const countData = await countResponse.json();
+              return {
+                ...table,
+                row_count: parseInt(countData.results?.[0]?.count) || 0
+              };
+            } catch {
+              return table;
+            }
+          })
+        );
+        setTables(tablesWithCounts);
+      }
     } catch (error) {
       console.error('Error fetching tables:', error);
     } finally {
@@ -72,7 +100,7 @@ export default function TablesView() {
                 <div className="flex items-center gap-4 pt-4 border-t border-border">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Icon name="Rows" size={14} />
-                    <span>Записи</span>
+                    <span>{table.row_count} записей</span>
                   </div>
                 </div>
               </Card>
