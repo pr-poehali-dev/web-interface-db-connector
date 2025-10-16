@@ -36,10 +36,10 @@ export default function UsersView() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
+      const response = await fetch('https://functions.poehali.dev/b5f50cf7-915d-41a9-a811-bd25bdc6f8f5', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: 'SELECT * FROM users ORDER BY id DESC' }),
+        body: JSON.stringify({ query: 'SELECT * FROM "t_p51763157_web_interface_db_con"."users" ORDER BY id DESC' }),
       });
       const data = await response.json();
       setUsers(data.results || []);
@@ -62,7 +62,7 @@ export default function UsersView() {
     }
 
     try {
-      const query = `INSERT INTO users (username, email, role, status) VALUES ('${newUser.username}', '${newUser.email}', '${newUser.role}', '${newUser.status}')`;
+      const query = `INSERT INTO "t_p51763157_web_interface_db_con"."users" (username, email, role, status) VALUES ('${newUser.username}', '${newUser.email}', '${newUser.role}', '${newUser.status}')`;
       
       await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
         method: 'POST',
@@ -83,7 +83,7 @@ export default function UsersView() {
     if (!editingUser) return;
 
     try {
-      const query = `UPDATE users SET username = '${editingUser.username}', email = '${editingUser.email}', role = '${editingUser.role}', status = '${editingUser.status}' WHERE id = ${editingUser.id}`;
+      const query = `UPDATE "t_p51763157_web_interface_db_con"."users" SET username = '${editingUser.username}', email = '${editingUser.email}', role = '${editingUser.role}', status = '${editingUser.status}' WHERE id = ${editingUser.id}`;
       
       await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
         method: 'POST',

@@ -1,0 +1,24 @@
+{
+  "tests": [
+    {
+      "name": "Test SELECT query",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "query": "SELECT 1 as test"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "results": "array",
+        "count": "number"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test OPTIONS for CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}

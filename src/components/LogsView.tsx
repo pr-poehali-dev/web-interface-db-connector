@@ -23,10 +23,10 @@ export default function LogsView() {
   const fetchLogs = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
+      const response = await fetch('https://functions.poehali.dev/b5f50cf7-915d-41a9-a811-bd25bdc6f8f5', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: 'SELECT * FROM activity_logs ORDER BY created_at DESC LIMIT 50' }),
+        body: JSON.stringify({ query: 'SELECT * FROM "t_p51763157_web_interface_db_con"."activity_logs" ORDER BY created_at DESC LIMIT 50' }),
       });
       const data = await response.json();
       setLogs(data.results || []);

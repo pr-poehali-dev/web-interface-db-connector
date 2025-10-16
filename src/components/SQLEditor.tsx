@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import Icon from '@/components/ui/icon';
 
 export default function SQLEditor() {
-  const [query, setQuery] = useState('SELECT * FROM users LIMIT 10;');
+  const [query, setQuery] = useState('SELECT * FROM "t_p51763157_web_interface_db_con"."users" LIMIT 10;');
   const [results, setResults] = useState<any[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function SQLEditor() {
     const startTime = performance.now();
 
     try {
-      const response = await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
+      const response = await fetch('https://functions.poehali.dev/b5f50cf7-915d-41a9-a811-bd25bdc6f8f5', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: query.trim() }),

@@ -33,7 +33,7 @@ export default function TablesView() {
         ORDER BY table_name
       `;
       
-      const response = await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
+      const response = await fetch('https://functions.poehali.dev/b5f50cf7-915d-41a9-a811-bd25bdc6f8f5', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),

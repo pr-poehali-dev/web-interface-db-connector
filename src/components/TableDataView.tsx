@@ -59,7 +59,7 @@ export default function TableDataView({ tableName, tableSchema, onBack }: TableD
         ${tableSchema ? `AND table_schema = '${tableSchema}'` : ''}
         ORDER BY ordinal_position
       `;
-      const response = await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
+      const response = await fetch('https://functions.poehali.dev/b5f50cf7-915d-41a9-a811-bd25bdc6f8f5', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),
@@ -77,7 +77,7 @@ export default function TableDataView({ tableName, tableSchema, onBack }: TableD
     setLoading(true);
     try {
       const query = `SELECT * FROM ${fullTableName} LIMIT 100`;
-      const response = await fetch('https://functions.poehali.dev/a20964af-6dfe-4727-aef3-f7f941e4abc4', {
+      const response = await fetch('https://functions.poehali.dev/b5f50cf7-915d-41a9-a811-bd25bdc6f8f5', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),
