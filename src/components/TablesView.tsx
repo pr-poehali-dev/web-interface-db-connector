@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import TableDataView from './TableDataView';
 
 interface TableInfo {
   table_name: string;
@@ -12,6 +13,7 @@ interface TableInfo {
 export default function TablesView() {
   const [tables, setTables] = useState<TableInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedTable, setSelectedTable] = useState<TableInfo | null>(null);
 
   useEffect(() => {
     fetchTables();
@@ -70,6 +72,16 @@ export default function TablesView() {
     }
   };
 
+  if (selectedTable) {
+    return (
+      <TableDataView
+        tableName={selectedTable.table_name}
+        tableSchema={selectedTable.table_schema}
+        onBack={() => setSelectedTable(null)}
+      />
+    );
+  }
+
   return (
     <div className="h-full flex flex-col">
       <div className="border-b border-border bg-card px-8 py-6">
@@ -85,7 +97,11 @@ export default function TablesView() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {tables.map((table) => (
-              <Card key={table.table_name} className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+              <Card 
+                key={table.table_name} 
+                className="p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => setSelectedTable(table)}
+              >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
